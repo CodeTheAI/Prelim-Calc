@@ -102,42 +102,42 @@
         from pyscript import Element
 
         def process_prelim(prelim_grade):
-        # defines the prelim grade weights
+# defines the prelim grade weights
             prelim_weight = 0.20
             midterm_weight = 0.30
             final_weight = 0.50
-        # checks if the value is over 100 and return a appropriate error message
+# checks if the value is over 100 and return a appropriate error message
             if prelim_grade > 100.0:
                 return "(Error: Prelim grade must not be higher than 100.0)"
-        # checks if the subject grade requires too high midterm and final grade req. and returns a message
+# checks if the subject grade requires too high midterm and final grade req. and returns a message
             if prelim_grade < 35:
                 return "(It's difficult to pass with average)"
-        # if the prelim grade is less than passing, calculate the required midterm and finals for the subject grade to pass (75)
+# if the prelim grade is less than passing, calculate the required midterm and finals for the subject grade to pass (75)
             elif prelim_grade < 75:
                 target_final_grade = 75.0
                 remaining_grade = target_final_grade - (prelim_weight * prelim_grade)
                 required_midterm_grade = remaining_grade / (midterm_weight + final_weight)
                 required_final_grade = remaining_grade / (final_weight + midterm_weight)
                 return f"You have a chance to pass! Just try to achieve the Required midterm grade: {required_midterm_grade:.2f} and Required final grade: {required_final_grade:.2f}"
-        # return a message if the grade passes and continue for dean req.  
+# return a message if the grade passes and continue for dean req.  
             else:
                 return "(Passed, No need for midterm and final grade requirements to pass the subject)"
-        # defines the required dean grades weights
+# defines the required dean grades weights
         def if_dean(prelim_grade):
             prelim_weight = 0.20
             midterm_weight = 0.30
             final_weight = 0.50
-        # merges the error with the calc prelim code so it doesn't duplicate
+# merges the error with the calc prelim code so it doesn't duplicate
             if prelim_grade > 100.0:
                 return ""
-        # checks the input if grater than 69.0 and proceeds with the calculations
+# checks the input if grater than 69.0 and proceeds with the calculations
             if prelim_grade >= 69:
                 required_dean = 90.0
                 remaining_dean = required_dean - (prelim_weight * prelim_grade)
                 required_midterm_dean = remaining_dean / (midterm_weight + final_weight)
                 required_final_dean = remaining_dean / (final_weight + midterm_weight)
                 return f"Congrats, you are eligible for Dean's Lister! Just achieve this grade for this semester: {required_midterm_dean:.2f} for midterm, and {required_final_dean:.2f} for finals."
-        # else was left blank because the real else condition is merged with the calc-grade event.
+# else was left blank because the real else condition is merged with the calc-grade event.
             else:
                 return ""
  # defines if the input is a valid int or float and returns a error message if false
@@ -166,10 +166,10 @@
 # returns a appropriate message if the prelim grade input is less than 69
                 else:
                     dean_result = "Not eligible for Dean's List due to total subject grade being less than 90 regardless of midterm and finals."
-    """
-    prints the result in the webpage in the appropriate divs and adds another element so the input automatically 
-    clears when the button is pressed instead of manually deleting in every press
-    """
+
+# prints the result in the webpage in the appropriate divs and adds another element so the input automatically 
+# clears when the button is pressed instead of manually deleting in every press
+
             Element("prelim_result").element.innerText = prelim_result
             Element("dean_result").element.innerText = dean_result
             Element("prelim_grade").element.value = ""
