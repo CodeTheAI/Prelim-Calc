@@ -147,7 +147,7 @@
                 return True
             except ValueError:
                 return False
-#  prepares the results of both prelim and dean
+# prepares the results of both prelim and dean
         def calculateGrade(event):
             prelim_result = ""
             dean_result = ""
@@ -166,10 +166,8 @@
 # returns a appropriate message if the prelim grade input is less than 69
                 else:
                     dean_result = "Not eligible for Dean's List due to total subject grade being less than 90 regardless of midterm and finals."
-
 # prints the result in the webpage in the appropriate divs and adds another element so the input automatically 
 # clears when the button is pressed instead of manually deleting in every press
-
             Element("prelim_result").element.innerText = prelim_result
             Element("dean_result").element.innerText = dean_result
             Element("prelim_grade").element.value = ""
