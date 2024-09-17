@@ -101,6 +101,7 @@
     <py-script>
         from pyscript import Element
 
+        # Function to process the prelim grade and determine if the student can pass
         def process_prelim(prelim_grade):
             prelim_weight = 0.20
             midterm_weight = 0.30
@@ -118,6 +119,7 @@
             else:
                 return "(Passed, No need for midterm and final grade requirements to pass the subject)"
 
+        # Function to determine if the student is eligible for the Dean's List
         def if_dean(prelim_grade):
             prelim_weight = 0.20
             midterm_weight = 0.30
@@ -133,6 +135,7 @@
             else:
                 return ""
 
+        # Function to check if the input is a valid number
         def is_valid_number(value):
             try:
                 float(value)
@@ -140,6 +143,7 @@
             except ValueError:
                 return False
 
+        # Function to calculate the grade based on the input and display the results
         def calculateGrade(event):
             prelim_result = ""
             dean_result = ""
@@ -158,8 +162,8 @@
             Element("dean_result").element.innerText = dean_result
             Element("prelim_grade").element.value = ""
 
+        # Set the onclick event for the calculate button to trigger the calculateGrade function
         Element("calculateButton").element.onclick = calculateGrade
     </py-script>
 </body>
 </html>
-
