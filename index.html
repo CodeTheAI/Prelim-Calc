@@ -153,7 +153,7 @@
                 if prelim_grade >= 69:
                     dean_result = if_dean(prelim_grade)
                 else:
-                    dean_result = "Not eligible for Dean's List due to total subject grade being less than 90."
+                    dean_result = "Not eligible for Dean's List due to total subject grade being less than 90 regardless of midterm and finals."
             Element("prelim_result").element.innerText = prelim_result
             Element("dean_result").element.innerText = dean_result
             Element("prelim_grade").element.value = ""
