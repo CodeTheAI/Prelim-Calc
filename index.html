@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Calculator</title>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <style>
+        body {
+            background-image: url(meguu.jpg);
+            background-size: cover; 
+            background-repeat: no-repeat; 
+            background-position: center center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        #container {
+            display: flex;
+            background-color: #f9b64e;
+            background-size: cover;
+            background-position: center;
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            box-sizing: border-box;
+            max-width: 90%;
+            overflow: auto;
+        }
+        .container {
+            text-align: center;
+            border: 4px solid #ed6240;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 100%;
+            overflow: auto;
+        }
+        .container h1 {
+            margin-bottom: 20px;
+        }
+        .container form div {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .container form label {
+            font-weight: bold;
+        }
+        .container form input {
+            padding: 5px;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .container form button {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            background-color: #6a4a57;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .container form button:hover {
+            background-color: #563d43;
+        }
+        .container .result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .container .prelim_result{
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <div id=container>
+        <div class="container">
+            <h1>Grade Calculator</h1>
+            <form id="gradeForm">
+                <label for="prelim_grade">Prelim Grade:</label>
+                <input type="text" id="prelim_grade" name="prelim_grade">
+                <button type="button" id="calculateButton">Calculate</button>
+            </form>
+            <div class="result"></div>
+            <h2>Result:</h2>
+            <div><p id="prelim_result" class="prelim_result"></p></div>
+            <div><p id="dean_result" class="prelim_result"></p></div>
+    </div>
+    <py-script>
+        from pyscript import Element
+
+        def process_prelim(prelim_grade):
+            prelim_weight = 0.20
+            midterm_weight = 0.30
+            final_weight = 0.50
+            if prelim_grade > 100.0:
+                return "(Error: Prelim grade must not be higher than 100.0)"
+            if prelim_grade < 35:
+                return "(Impossible to pass with average)"
+            elif prelim_grade < 75:
+                target_final_grade = 75.0
+                remaining_grade = target_final_grade - (prelim_weight * prelim_grade)
+                required_midterm_grade = remaining_grade / (midterm_weight + final_weight)
+                required_final_grade = remaining_grade / (final_weight + midterm_weight)
+                return f"You have a chance to pass! Just try to achieve the Required midterm grade: {required_midterm_grade:.2f} and Required final grade: {required_final_grade:.2f}"
+            else:
+                return "(Passed, No need for midterm and final grade requirements to pass the subject)"
+
+        def if_dean(prelim_grade):
+            prelim_weight = 0.20
+            midterm_weight = 0.30
+            final_weight = 0.50
+            if prelim_grade > 100.0:
+                return ""
+            if prelim_grade >= 69:
+                required_dean = 90.0
+                remaining_dean = required_dean - (prelim_weight * prelim_grade)
+                required_midterm_dean = remaining_dean / (midterm_weight + final_weight)
+                required_final_dean = remaining_dean / (final_weight + midterm_weight)
+                return f"Congrats, you are eligible for Dean's Lister! Just achieve this grade for this semester: {required_midterm_dean:.2f} for midterm, and {required_final_dean:.2f} for finals."
+            else:
+                return ""
+
+        def is_valid_number(value):
+            try:
+                float(value)
+                return True
+            except ValueError:
+                return False
+
+        def calculateGrade(event):
+            prelim_result = ""
+            dean_result = ""
+            prelim_grade = Element("prelim_grade").element.value
+            if not is_valid_number(prelim_grade):
+                prelim_result = "Error: Invalid prelim grade input"
+                dean_result = ""
+            else:
+                prelim_grade = float(prelim_grade)
+                prelim_result = process_prelim(prelim_grade)
+                if prelim_grade >= 69:
+                    dean_result = if_dean(prelim_grade)
+                else:
+                    dean_result = "Not eligible for Dean's List due to total subject grade being less than 90."
+            Element("prelim_result").element.innerText = prelim_result
+            Element("dean_result").element.innerText = dean_result
+            Element("prelim_grade").element.value = ""
+
+        Element("calculateButton").element.onclick = calculateGrade
+    </py-script>
+</body>
+</html>
