@@ -120,8 +120,6 @@
             prelim_weight = 0.20
             midterm_weight = 0.30
             final_weight = 0.50
-            if prelim_grade > 100.0:
-                return "(Error: Prelim grade must not be higher than 100.0)"
             if prelim_grade < 25.5:
                 return "Difficult to pass with average scores, just try to achieve the required grades for this sememster below: "
             elif prelim_grade < 75:
@@ -162,10 +160,20 @@
             if not is_valid_number(prelim_grade):
                 prelim_result = "Error: Invalid prelim grade input"
                 dean_result = ""
+                Element("inputted_prelim_grade").element.innerText = ""
             else:
                 prelim_grade = float(prelim_grade)
+                if prelim_grade > 100.0:
+                    prelim_result = "(Error: Prelim grade must not be higher than 100.0)"
+                    Element("inputted_prelim_grade").element.innerText = ""
+                else:
+                    Element("inputted_prelim_grade").element.innerText = f"Prelim Grade: {prelim_grade}"
+                    
+            
                 prelim_result = process_prelim(prelim_grade)
-                if prelim_grade < 75:
+                if prelim_grade > 100.0:
+                    prelim_result = "(Error: Prelim grade must not be higher than 100.0)"
+                elif prelim_grade < 75:
                     target_final_grade = 75.0
                     remaining_grade = target_final_grade - (0.20 * prelim_grade)
                     required_midterm_grade = remaining_grade / (0.30 + 0.50)
@@ -181,8 +189,8 @@
                     dean_result = if_dean(prelim_grade)
                 else:
                     dean_result = "Not eligible for Dean's List due to total subject grade being less than 90. regardless of midterm and final efforts"
+
             # Returns the results to the user and the inputted prelim grade and the results as well as the dean list eligibility and clear the input field
-            Element("inputted_prelim_grade").element.innerText = f"Prelim Grade: {prelim_grade}"
             Element("prelim_result").element.innerText = prelim_result
             Element("midterm_final_result").element.innerText = midterm_final_result
             Element("dean_result").element.innerText = dean_result
