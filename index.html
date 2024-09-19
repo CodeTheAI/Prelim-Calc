@@ -113,7 +113,7 @@
         </div>
     </div>
     <py-script>
-        from pyscript import Element
+        from pyscript import Element, js
 
         # Function to process the prelim grade and determine if the student can pass
         def process_prelim(prelim_grade):
@@ -197,15 +197,15 @@
             Element("dean_result").element.innerText = dean_result
             Element("prelim_grade").element.value = ""
 
-        # Set the onclick event for the calculate button to trigger the calculateGrade function
-        Element("calculateButton").element.onclick = calculateGrade
+# Set the onclick event for the calculate button to trigger the calculateGrade function
+        js.document.getElementById("calculateButton").addEventListener("click", calculateGrade)
 
-                    # Add event listener for Enter key press
+        # Add event listener for Enter key press
         def handle_keypress(event):
             if event.key == "Enter":
                 calculateGrade(event)
 
-        Element("prelim_grade").element.add_event_listener("keypress", handle_keypress)
+        js.document.getElementById("prelim_grade").addEventListener("keypress", handle_keypress)
     </py-script>
 </body>
 </html>
