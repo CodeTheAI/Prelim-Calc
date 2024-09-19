@@ -153,6 +153,7 @@
 
         # Function to calculate the grade based on the input and display the results
         def calculateGrade(event):
+            event.preventDefault()  # Prevent the default form submission behavior
             prelim_result = ""
             midterm_final_result = ""
             dean_result = ""
@@ -198,6 +199,13 @@
 
         # Set the onclick event for the calculate button to trigger the calculateGrade function
         Element("calculateButton").element.onclick = calculateGrade
+
+                    # Add event listener for Enter key press
+        def handle_keypress(event):
+            if event.key == "Enter":
+                calculateGrade(event)
+
+        Element("prelim_grade").element.add_event_listener("keypress", handle_keypress)
     </py-script>
 </body>
 </html>
