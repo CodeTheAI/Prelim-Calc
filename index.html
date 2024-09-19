@@ -77,11 +77,22 @@
             margin-top: 20px;
             font-weight: bold;
         }
+        .container .inputted_prelim_grade{
+            margin-top: 20px;
+            font-weight: bold;
+        }
         .container .prelim_result{
             margin-top: 20px;
             font-weight: bold;
         }
-
+        .container .midterm_final_result{
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .container .dean_result{
+            margin-top: 20px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -95,8 +106,11 @@
             </form>
             <div class="result"></div>
             <h2>Result:</h2>
-            <div><p id="prelim_result" class="prelim_result"></p></div>
-            <div><p id="dean_result" class="prelim_result"></p></div>
+            <div id="inputted_prelim_grade" class="inputted_prelim_grade"></div>   
+            <div id="prelim_result" class="prelim_result"></div>
+            <div id="midterm_final_result" class="midterm_final_result"></div>
+            <div id="dean_result" class="dean_result"></div>
+        </div>
     </div>
     <py-script>
         from pyscript import Element
@@ -108,16 +122,12 @@
             final_weight = 0.50
             if prelim_grade > 100.0:
                 return "(Error: Prelim grade must not be higher than 100.0)"
-            if prelim_grade < 35:
-                return "(Impossible to pass with average)"
+            if prelim_grade < 25.5:
+                return "Difficult to pass with average scores, just try to achieve the required grades for this sememster below: "
             elif prelim_grade < 75:
-                target_final_grade = 75.0
-                remaining_grade = target_final_grade - (prelim_weight * prelim_grade)
-                required_midterm_grade = remaining_grade / (midterm_weight + final_weight)
-                required_final_grade = remaining_grade / (final_weight + midterm_weight)
-                return f"You have a chance to pass! Just try to achieve the Required midterm grade: {required_midterm_grade:.2f} and Required final grade: {required_final_grade:.2f}"
+                return f"You have a chance to pass! Just achieve the grades below for this semester: "
             else:
-                return "(Passed, No need for midterm and final grade requirements to pass the subject)"
+                return f"You already passed!!!, just dont let your grade down within the required grades for this sememster below: "
 
         # Function to determine if the student is eligible for the Dean's List
         def if_dean(prelim_grade):
@@ -146,6 +156,7 @@
         # Function to calculate the grade based on the input and display the results
         def calculateGrade(event):
             prelim_result = ""
+            midterm_final_result = ""
             dean_result = ""
             prelim_grade = Element("prelim_grade").element.value
             if not is_valid_number(prelim_grade):
@@ -154,11 +165,26 @@
             else:
                 prelim_grade = float(prelim_grade)
                 prelim_result = process_prelim(prelim_grade)
+                if prelim_grade < 75:
+                    target_final_grade = 75.0
+                    remaining_grade = target_final_grade - (0.20 * prelim_grade)
+                    required_midterm_grade = remaining_grade / (0.30 + 0.50)
+                    required_final_grade = remaining_grade / (0.50 + 0.30)
+                    midterm_final_result = f"Required midterm grade: {required_midterm_grade:.2f}, Required final grade: {required_final_grade:.2f}"
+                else:
+                    target_final_grade = 75.0
+                    remaining_grade = target_final_grade - (0.20 * prelim_grade)
+                    required_midterm_grade = remaining_grade / (0.30 + 0.50)
+                    required_final_grade = remaining_grade / (0.50 + 0.30)
+                    midterm_final_result = f"Required midterm grade: {required_midterm_grade:.2f}, Required final grade: {required_final_grade:.2f}"
                 if prelim_grade >= 69:
                     dean_result = if_dean(prelim_grade)
                 else:
-                    dean_result = "Not eligible for Dean's List due to total subject grade being less than 90."
+                    dean_result = "Not eligible for Dean's List due to total subject grade being less than 90. regardless of midterm and final efforts"
+            # Returns the results to the user and the inputted prelim grade and the results as well as the dean list eligibility and clear the input field
+            Element("inputted_prelim_grade").element.innerText = f"Prelim Grade: {prelim_grade}"
             Element("prelim_result").element.innerText = prelim_result
+            Element("midterm_final_result").element.innerText = midterm_final_result
             Element("dean_result").element.innerText = dean_result
             Element("prelim_grade").element.value = ""
 
